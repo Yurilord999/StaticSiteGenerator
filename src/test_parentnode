@@ -1,0 +1,42 @@
+import unittest
+from htmlnode import *
+
+class TestHTMLNode(unittest.TestCase):
+    def test_to_html(self):
+        node = ParentNode(
+            "p",
+            [
+            LeafNode("b", "Bold text"),
+            LeafNode("i", "italic text"),
+            LeafNode(None, "Normal text"),
+            ],
+        )
+        self.assertEqual(node.to_html(),
+                         '<p><b>Bold text</b><i>italic text</i>Normal text</p>'
+                         )
+    
+    def test_nested_children(self):
+        inner = LeafNode("a", "inner")
+        outer = ParentNode("b", [inner])
+        node = ParentNode("c", [outer])
+        self.assertEqual(node.to_html(),
+                         "<c><b><a>inner</a></b></c>")
+
+    def test_repr(self):
+        node = ParentNode("a", [LeafNode("b", "Bold text")], {"href": "url"})
+        self.assertEqual(repr(node),
+                         "ParentNode(a, [LeafNode(b, Bold text, None)], {'href': 'url'})")
+
+    def test_no_tag(self):
+        node = ParentNode(None, [LeafNode("b", "Bold text")])
+        with self.assertRaises(ValueError): 
+            node.to_html()
+
+    def test_no_children(self):
+        node = ParentNode("p", None)
+        with self.assertRaises(ValueError): 
+            node.to_html()
+    
+
+if __name__ == "__main__":
+    unittest.main()

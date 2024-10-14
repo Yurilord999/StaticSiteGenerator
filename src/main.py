@@ -1,11 +1,25 @@
 from textnode import *
 from htmlnode import *
 
+
 def main():
-    Textnode = TextNode("hello","bold","https://yea")
-    print(Textnode)
-    HtmlNode = HTMLNode("a", "text", ["tags", "tag"], {"href": "https://www.google.com","target": "blank"})
-    print(HtmlNode)
-    print(HtmlNode.props_to_html())
+
+    node = ParentNode(
+    "p",
+    [
+        LeafNode("b", "Bold text"),
+        LeafNode(None, "Normal text"),
+        LeafNode("i", "italic text"),
+        LeafNode(None, "Normal text"),
+    ],
+    )
+    node2 = ParentNode("a", [LeafNode("b", "Bold text")], {"href": "url"})
+
+    print(node.to_html())
+    print(repr(node2))
+    text = TextNode("text", "link", "url")
+    print(repr(text))
+    print(text_node_to_html_node(text))
+
 
 main()

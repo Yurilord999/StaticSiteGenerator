@@ -5,7 +5,7 @@ class TestHTMLNode(unittest.TestCase):
     def test_eq_props(self):
         node = HTMLNode("a","a",None,{"href": "url", "target": "_blank"})
         self.assertEqual(node.props_to_html(),
-                         'href="url" target="_blank"'
+                         ' href="url" target="_blank"'
                          )
     
     def test_not_eq_props(self):
