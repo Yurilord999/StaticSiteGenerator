@@ -1,9 +1,9 @@
 import unittest
-from split_inlines import *
+from markdown_converter import *
 from textnode import *
 
-class TestSplitInline(unittest.TestCase):
-    def test_bold(self):
+class TestMarkdown(unittest.TestCase):
+    def test_markdown_bold(self):
         node = TextNode("text with **bold** word", "text")
         new_nodes = split_nodes_delimiter([node], "**", "bold")
         self.assertListEqual(
@@ -12,10 +12,10 @@ class TestSplitInline(unittest.TestCase):
                 TextNode("bold", "bold"),
                 TextNode(" word", "text"),
             ],
-            new_nodes,
+            new_nodes
         )
     
-    def test_italic(self):
+    def test_markdown_talic(self):
         node = TextNode("text with *italic* word", "text")
         new_nodes = split_nodes_delimiter([node], "*", "italic")
         self.assertListEqual(
@@ -24,10 +24,10 @@ class TestSplitInline(unittest.TestCase):
                 TextNode("italic", "italic"),
                 TextNode(" word", "text"),
             ],
-            new_nodes,
+            new_nodes
         )
     
-    def test_code(self):
+    def test_markdown_code(self):
         node = TextNode("text with `code` word", "text")
         new_nodes = split_nodes_delimiter([node], "`", "code")
         self.assertListEqual(
@@ -36,10 +36,10 @@ class TestSplitInline(unittest.TestCase):
                 TextNode("code", "code"),
                 TextNode(" word", "text"),
             ],
-            new_nodes,
+            new_nodes
         )
 
-    def test_multi(self):
+    def test_markdown_multi(self):
         node = TextNode("text with `code words` and **bold words** and *italic words*", "text")
         new_nodes = split_nodes_delimiter([node], "`", "code")
         new_nodes = split_nodes_delimiter(new_nodes, "**", "bold")
@@ -53,7 +53,29 @@ class TestSplitInline(unittest.TestCase):
                 TextNode(" and ", "text"),
                 TextNode("italic words", "italic"),
             ],
-            new_nodes,
+            new_nodes
+        )
+    
+    def test_markdown_images(self):
+        text = "Text with ![image1](https://image.jpeg) and ![image2](https://image.gif)"
+        images = extract_markdown_images(text)
+        self.assertListEqual(
+            [
+                ("image1", "https://image.jpeg"), 
+                ("image2", "https://image.gif")
+            ], 
+            images
+        )
+
+    def test_markdown_links(self):
+        text = "Text with [link1](https://link.com) and [link2](https://link2.com)"
+        links = extract_markdown_links(text)
+        self.assertListEqual(
+            [
+                ("link1", "https://link.com"),
+                ("link2", "https://link2.com")
+            ], 
+            links
         )
 
 
