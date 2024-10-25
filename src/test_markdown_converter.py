@@ -77,7 +77,56 @@ class TestMarkdown(unittest.TestCase):
             ], 
             links
         )
+    
+    def test_split_nodes_link(self):
+        node = TextNode("Text with [link 1](https://link.com) and [link 2](https://link2.com)", "text")
+        bait = TextNode("Text with [link 1](https://link.com) and ![not link](https://image2.jpeg)", "text")
+        links = split_nodes_link([node])
+        no_links = split_nodes_link([TextNode("Nothing to split", "text")])
+        mix_up = split_nodes_link([bait])
+        self.assertListEqual(
+            [
+                TextNode("Text with ", "text"),
+                TextNode("link 1", "link", "https://link.com"),
+                TextNode(" and ", "text"),
+                TextNode("link 2", "link", "https://link2.com"), 
+            ],
+            links
+        )
+        self.assertListEqual([TextNode("Nothing to split", "text")], no_links)
+        self.assertListEqual(
+            [
+                TextNode("Text with ", "text"),
+                TextNode("link 1", "link", "https://link.com"),
+                TextNode(" and ![not link](https://image2.jpeg)", "text"),            
+            ],
+            mix_up
+        )
 
+    def test_split_nodes_image(self):
+        node = TextNode("Text with ![image 1](https://image.gif) and ![image 2](https://image2.jpeg)", "text")
+        bait = TextNode("Text with ![image 1](https://image.gif) and [not image](https://image2.jpeg)", "text")
+        images = split_nodes_image([node])
+        no_images = split_nodes_image([TextNode("Nothing to split", "text")])
+        mix_up = split_nodes_image([bait])
+        self.assertListEqual(
+            [
+                TextNode("Text with ", "text"),
+                TextNode("image 1", "image", "https://image.gif"),
+                TextNode(" and ", "text"),
+                TextNode("image 2", "image", "https://image2.jpeg"), 
+            ],
+            images
+        )
+        self.assertListEqual([TextNode("Nothing to split", "text")], no_images)
+        self.assertListEqual(
+            [
+                TextNode("Text with ", "text"),
+                TextNode("image 1", "image", "https://image.gif"),
+                TextNode(" and [not image](https://image2.jpeg)", "text"),            
+            ],
+            mix_up
+        )        
 
 if __name__ == "__main__":
     unittest.main() 
