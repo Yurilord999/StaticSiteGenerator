@@ -13,10 +13,21 @@ Example:
 ]
 """
 
+# convert markdown to a TextNode, then converting into a list of TextNodes of their respective type
+def text_to_textnodes(text):
+        new_nodes = [TextNode(text, "text")]
+        new_nodes = split_nodes_delimiter(new_nodes, "`", "code")
+        new_nodes = split_nodes_delimiter(new_nodes, "**", "bold")
+        new_nodes = split_nodes_delimiter(new_nodes, "*", "italic")
+        new_nodes = split_nodes_image(new_nodes)
+        new_nodes = split_nodes_link(new_nodes)
+        return new_nodes
+
+# see top description   
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
     for node in old_nodes:
-        # only split TextType.TEXT, append others as is
+        # only split text_type_text, append others as is
         if node.text_type != "text":
             new_nodes.append(node)
             continue

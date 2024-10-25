@@ -126,7 +126,26 @@ class TestMarkdown(unittest.TestCase):
                 TextNode(" and [not image](https://image2.jpeg)", "text"),            
             ],
             mix_up
-        )        
+        )  
+
+    def test_text_to_textnodes(self):
+        text = "This is **text** with an *italic* word and a `code block` and an ![image](https://image.jpeg) and a [link](https://link.com)" 
+        check = text_to_textnodes(text)
+        self.assertListEqual(
+            [
+                TextNode("This is ", "text"),
+                TextNode("text", "bold"),
+                TextNode(" with an ", "text"),
+                TextNode("italic", "italic"),
+                TextNode(" word and a ", "text"),
+                TextNode("code block", "code"),
+                TextNode(" and an ", "text"),
+                TextNode("image", "image", "https://image.jpeg"),
+                TextNode(" and a ", "text"),
+                TextNode("link", "link", "https://link.com"),   
+            ],
+            check
+        )     
 
 if __name__ == "__main__":
     unittest.main() 
