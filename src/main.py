@@ -1,6 +1,7 @@
 from textnode import *
 from htmlnode import *
 from markdown_converter import *
+from markdown_blocks import *
 
 
 def main():
@@ -26,6 +27,20 @@ def main():
     markdown_string = "# This is a heading\n\n\n\n\n\n This is a paragraph of text. It has some **bold** and *italic* words inside of it.\n\n\n * This is the first list item in a list block\n* This is a list item\n* This is another list item"
 
     print(markdown_to_blocks(markdown_string))
+    block = """1. dsdsdsdsdsdsd
+1. adsdsdsd
+3. dsdsdd"""
+    block2 = "```###### dsdsd``"
+    block3 = "``dsdsd```"
+    block4 = "``######## dsdsd``"
+    block5 = "### dsdsd"
+    print(block_to_block_type(block))
+    print("1")
+    print(block_to_block_type(block2))
+    print(block_to_block_type(block3))
+    print(block_to_block_type(block4))
+    print(block_to_block_type(block5))
+    
 
 
 main()
