@@ -1,9 +1,9 @@
 class HTMLNode():
     def __init__(self, tag=None, value=None, children=None, props=None):
-        self.tag = tag              #String representing HTML tag 
-        self.value = value          #String representing value of tag
-        self.children = children    #list of HTMLNode objects representing children of this node
-        self.props = props          #dict of k-v pairs representing attributes {"href": "url"}
+        self.tag = tag              # String representing HTML tag <tag>, <\end>
+        self.value = value          # String representing value of tag <>value<\>
+        self.children = children    # list of HTMLNode objects representing children of this node
+        self.props = props          # dict of k-v pairs representing attributes {"href": "url"}
 
     def to_html(self):
         raise NotImplementedError
@@ -19,7 +19,7 @@ class HTMLNode():
     def __repr__(self):
         return f'HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})' 
     
-    
+# A single HTML node that represents a single HTML tag with no children <p>leaf<\p>
 class LeafNode(HTMLNode):
     def __init__(self, tag, value, props=None):
         super().__init__(tag, value, props)
@@ -37,7 +37,7 @@ class LeafNode(HTMLNode):
     def __repr__(self):
         return f"LeafNode({self.tag}, {self.value}, {self.props})"
     
-  
+# Any HTML node that's not leaf node <p> leaf <b>leaf<\> leaf <i>leaf<\i> leaf <\p>
 class ParentNode(HTMLNode):
     def __init__(self, tag, children, props=None):
         super().__init__(tag, children, props)

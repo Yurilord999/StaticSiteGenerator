@@ -22,25 +22,32 @@ def main():
     text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
 
     split = split_nodes_link([TextNode("Text with [link 1](https://link.com) and ![not link](https://image2.jpeg)", "text")])
-    print(text_to_textnodes(text))
 
-    markdown_string = "# This is a heading\n\n\n\n\n\n This is a paragraph of text. It has some **bold** and *italic* words inside of it.\n\n\n * This is the first list item in a list block\n* This is a list item\n* This is another list item"
-
-    print(markdown_to_blocks(markdown_string))
-    block = """1. dsdsdsdsdsdsd
-1. adsdsdsd
-3. dsdsdd"""
-    block2 = "```###### dsdsd``"
-    block3 = "``dsdsd```"
-    block4 = "``######## dsdsd``"
-    block5 = "### dsdsd"
-    print(block_to_block_type(block))
-    print("1")
-    print(block_to_block_type(block2))
-    print(block_to_block_type(block3))
-    print(block_to_block_type(block4))
-    print(block_to_block_type(block5))
     
+    markdown = """#### This is a heading
+
+This is a paragraph of text. It has some **bold** and *italic* words inside of it.
+
+* This is the first list item in a list block
+* This is a list item
+* This is another list item"""
+    converted = markdown_to_html_node(markdown)
+    print(converted.to_html())
+    print("------------------")
+
+    markdown = """
+- list *italic*
+- list `code`
+- dsdsdsd
+
+
+1. **law**
+2. and order
+
+"""
+
+    converted = markdown_to_html_node(markdown)
+    print(converted.to_html())
 
 
 main()

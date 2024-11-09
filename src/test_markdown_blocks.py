@@ -81,6 +81,40 @@ It has some **bold** and *italic* words inside of it.
 
 
 
+    def test_markdown_to_html_node(self):
+        markdown = """
+# This is a heading
+
+
+
+This is a paragraph of text."""
+
+        html_nodes = markdown_to_html_node(markdown).to_html()
+        self.assertEqual(
+            html_nodes,
+            "<div><h1>This is a heading</h1><p>This is a paragraph of text.</p></div>"
+           )
+
+        markdown = """
+- list *italic*
+- list `code`"""
+
+        html_nodes = markdown_to_html_node(markdown).to_html()
+        self.assertEqual(
+            html_nodes,
+            "<div><ul><li>- list <i>italic</i></li><li>- list <code>code</code></li></ul></div>"
+           )
+        
+
+        markdown = """
+1. **law**
+2. and order"""
+        html_nodes = markdown_to_html_node(markdown).to_html()
+        self.assertEqual(
+            html_nodes,
+            "<div><ol><li>1. <b>law</b></li><li>2. and order</li></ol></div>"
+           )
+     
 
 
 if __name__ == "__main__":
