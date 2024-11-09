@@ -1,4 +1,7 @@
 import re
+from markdown_converter import *
+from textnode import *
+from htmlnode import * 
 
 # split block markdown text into segements -> list
 def markdown_to_blocks(markdown_string):
@@ -29,3 +32,20 @@ def block_to_block_type(markdown_block):
                 return "paragraph"
         return "ordered_list"
     return "paragraph"
+
+# Converts a whole Markdown document into a HTMLNode tree 
+def markdown_to_html_node(markdown):
+    blocks = markdown_to_blocks(markdown)
+    block_types = [block_to_block_type(block) for block in blocks]
+    html_nodes = []
+
+    for i in range(len(blocks)):
+        html_nodes.append(ParentNode(block_types[i], text_to_leafs(blocks[i])))
+
+    return ParentNode(("div", html_nodes))    
+
+# Converts a single Markdown block into a list of HTML LeafNodes
+def text_to_leafs(text):
+    text_nodes = text_to_textnodes(text)
+    html_leafs = [text_node_to_html_node(text_node) for text_node in text_nodes]
+    return html_leafs
