@@ -2,52 +2,31 @@ from textnode import *
 from htmlnode import *
 from markdown_converter import *
 from markdown_blocks import *
+import os.path
+import shutil
 
 
 def main():
+    public_path = "/home/yurilord/workspace/github.com/Yurilord999/static_site_generator/public"
+    static_path = "/home/yurilord/workspace/github.com/Yurilord999/static_site_generator/static"
+    if os.path.exists(public_path):
+        shutil.rmtree(public_path)
+    os.mkdir(public_path)
+    static_dir = os.listdir(static_path)
+    copy_files(static_dir, static_path, public_path)
+    print("done")
 
-    node = ParentNode(
-    "p",
-    [
-        LeafNode("b", "Bold text"),
-        LeafNode(None, "Normal text"),
-        LeafNode("i", "italic text"),
-        LeafNode(None, "Normal text"),
-    ],
-    )
-    node2 = ParentNode("a", [LeafNode("b", "Bold text")], {"href": "url"})
-
-
-    node = TextNode("This is text with a [rick roll](https://i.imgur.com/aKaOqIh.gif) and [obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", "text")
-    text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
-
-    split = split_nodes_link([TextNode("Text with [link 1](https://link.com) and ![not link](https://image2.jpeg)", "text")])
-
+def copy_files(dir, static_path, public_path):
+    for file in dir:
+        if os.path.isfile(os.path.join(static_path, file)):
+            shutil.copy(os.path.join(static_path, file), os.path.join(public_path, file))
+        else:
+            public_subfolder_path = os.path.join(public_path, file)
+            static_subfolder_path = os.path.join(static_path, file)
+            os.mkdir(public_subfolder_path)
+            subfolder_dir = os.listdir(static_subfolder_path)
+            copy_files(subfolder_dir, static_subfolder_path, public_subfolder_path)
+     
     
-    markdown = """#### This is a heading
-
-This is a paragraph of text. It has some **bold** and *italic* words inside of it.
-
-* This is the first list item in a list block
-* This is a list item
-* This is another list item"""
-    converted = markdown_to_html_node(markdown)
-    print(converted.to_html())
-    print("------------------")
-
-    markdown = """
-- list *italic*
-- list `code`
-- dsdsdsd
-
-
-1. **law**
-2. and order
-
-"""
-
-    converted = markdown_to_html_node(markdown)
-    print(converted.to_html())
-
 
 main()
